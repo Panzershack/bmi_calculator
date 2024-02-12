@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'reusable_card.dart';
+import 'icon_content.dart';
 
 const bottomContainerHeight = 80.0;
-const Color darkBlue = Color(0xFF1d1E33);
+const Color activeCardColor = Color(0xFF1d1E33);
+const Color inactiveCardColor = Color(0xFF111328);
 const Color crimsonRed = Color(0xFFeb1555);
+
+enum gender { male, female }
 
 class InputPage extends StatefulWidget {
   @override
@@ -11,6 +16,8 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
+  gender? selectedGender;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,52 +35,49 @@ class _InputPageState extends State<InputPage> {
             child: Row(
               children: [
                 Expanded(
-                  child: reusableCard(
-                      darkBlue,
-                      Column(
-                        children: [
-                          Icon(
-                            FontAwesomeIcons.mars,
-                            size: 80.0,
-                          ),
-                          SizedBox(
-                            height: 15.0,
-                          ),
-                          Text(
-                            'MALE',
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              color: Color(0xFF8D8E98),
-                            ),
-                          )
-                        ],
-                      )),
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedGender = gender.male;
+                      });
+                    },
+                    child: reusableCard(
+                      selectedGender == gender.male
+                          ? activeCardColor
+                          : inactiveCardColor,
+                      cardChild: iconContent('Male', FontAwesomeIcons.mars),
+                    ),
+                  ),
                 ),
                 Expanded(
-                  child: reusableCard(
-                    darkBlue,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedGender = gender.female;
+                      });
+                    },
+                    child: reusableCard(
+                      selectedGender == gender.female
+                          ? activeCardColor
+                          : inactiveCardColor,
+                      cardChild: iconContent('Female', FontAwesomeIcons.venus),
+                    ),
                   ),
                 ),
               ],
             ),
           ),
           Expanded(
-            child: reusableCard(
-              darkBlue,
-            ),
+            child: reusableCard(activeCardColor),
           ),
           Expanded(
             child: Row(
               children: [
                 Expanded(
-                  child: reusableCard(
-                    darkBlue,
-                  ),
+                  child: reusableCard(activeCardColor),
                 ),
                 Expanded(
-                  child: reusableCard(
-                    darkBlue,
-                  ),
+                  child: reusableCard(activeCardColor),
                 ),
               ],
             ),
@@ -85,32 +89,6 @@ class _InputPageState extends State<InputPage> {
             width: double.infinity,
           ),
         ],
-      ),
-    );
-  }
-}
-
-const Widget sizedbox = SizedBox();
-
-class reusableCard extends StatelessWidget {
-  reusableCard(
-    this.myColor,
-    this.cardChild,
-  );
-
-  reusableCard.withColor(this.myColor, {this.cardChild = sizedbox});
-
-  final Color myColor;
-  final Widget cardChild;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: cardChild,
-      margin: EdgeInsets.all(15.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.0),
-        color: myColor,
       ),
     );
   }
