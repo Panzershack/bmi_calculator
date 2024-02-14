@@ -14,6 +14,8 @@ class InputPage extends StatefulWidget {
 class _InputPageState extends State<InputPage> {
   gender? selectedGender;
   int height = 180;
+  int weight = 60;
+  int age = 18;
 
   @override
   Widget build(BuildContext context) {
@@ -86,18 +88,28 @@ class _InputPageState extends State<InputPage> {
                       )
                     ],
                   ),
-                  Slider(
-                    value: height.toDouble(),
-                    min: 120.0,
-                    max: 220.0,
-                    onChanged: (double newVal) {
-                      print(newVal);
-                      setState(() {
-                        height = newVal.round();
-                      });
-                    },
-                    activeColor: kCrimsonRed,
-                    inactiveColor: kInactiveCardColor,
+                  SliderTheme(
+                    data: SliderTheme.of(context).copyWith(
+                      inactiveTickMarkColor: Color(0xff8d8e98),
+                      thumbColor: kCrimsonRed,
+                      overlayColor: kCrimsonRed,
+                      activeTrackColor: Color(0xff8d8e98),
+                      thumbShape:
+                          RoundSliderThumbShape(enabledThumbRadius: 15.0),
+                      overlayShape:
+                          RoundSliderOverlayShape(overlayRadius: 30.0),
+                    ),
+                    child: Slider(
+                      value: height.toDouble(),
+                      min: 120.0,
+                      max: 220.0,
+                      onChanged: (double newVal) {
+                        print(newVal);
+                        setState(() {
+                          height = newVal.round();
+                        });
+                      },
+                    ),
                   )
                 ],
               ),
@@ -107,10 +119,87 @@ class _InputPageState extends State<InputPage> {
             child: Row(
               children: [
                 Expanded(
-                  child: reusableCard(myColor: kActiveCardColor),
+                  child: reusableCard(
+                    myColor: kActiveCardColor,
+                    cardChild: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Weight',
+                          style: kLabelTextStyles,
+                        ),
+                        Text(
+                          weight.toString(),
+                          style: kNumberStyles,
+                        ),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              RoundIconButton(
+                                icon: FontAwesomeIcons.minus,
+                                onPressed: () {
+                                  setState(() {
+                                    weight--;
+                                  });
+                                },
+                              ),
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              RoundIconButton(
+                                icon: FontAwesomeIcons.plus,
+                                onPressed: () {
+                                  setState(() {
+                                    weight++;
+                                  });
+                                },
+                              ),
+                            ]),
+                      ],
+                    ),
+                  ),
                 ),
                 Expanded(
-                  child: reusableCard(myColor: kActiveCardColor),
+                  child: reusableCard(
+                    myColor: kActiveCardColor,
+                    cardChild: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Age',
+                          style: kLabelTextStyles,
+                        ),
+                        Text(
+                          age.toString(),
+                          style: kNumberStyles,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            RoundIconButton(
+                              icon: FontAwesomeIcons.minus,
+                              onPressed: () {
+                                setState(() {
+                                  age--;
+                                });
+                              },
+                            ),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            RoundIconButton(
+                              icon: FontAwesomeIcons.plus,
+                              onPressed: () {
+                                setState(() {
+                                  age++;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -123,6 +212,27 @@ class _InputPageState extends State<InputPage> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class RoundIconButton extends StatelessWidget {
+  RoundIconButton({this.icon, this.onPressed});
+  final IconData? icon;
+  final Function()? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+      child: Icon(icon),
+      elevation: 6.0,
+      constraints: BoxConstraints.tightFor(
+        width: 56.0,
+        height: 56.0,
+      ),
+      shape: CircleBorder(),
+      fillColor: Color(0xff4c4f5e),
+      onPressed: onPressed,
     );
   }
 }
